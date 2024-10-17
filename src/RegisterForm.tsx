@@ -1,65 +1,107 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function RegisterForm() {
-  const [formData, setFormData] = useState({
-    name: "",
-    age: "",
-    income: "",
-    city: "",
-  });
+  const expireDelay = 180000;
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  const [user, setUser] = useState("");
+  const [validUser, setValidUser] = useState(false);
+  useEffect(() => {
+    user.length >= 8 ? setValidUser(true) : setValidUser(false);
+  }, [user]);
+
+  const [age, setAge] = useState(NaN);
+  const [validAge, setValidAge] = useState(false);
+  useEffect(() => {
+    age >= 18 && age <= 65 ? setValidAge(true) : setValidAge(false);
+  }, [age]);
+
+  const [income, setIncome] = useState(NaN);
+  const [validIncome, setValidIncome] = useState(false);
+  useEffect(() => {
+    income > 0 ? setValidIncome(true) : setValidIncome(false);
+  }, [income]);
+
+  const [city, setCity] = useState("");
+  const [validCity, setValidCity] = useState(false);
+  useEffect(() => {
+    city != "" ? setValidCity(true) : setValidCity(false);
+  }, [city]);
+
+  const [errMsg, setErrMsg] = useState("");
+  useEffect(() => {
+    setErrMsg("");
+  }, [user, age, income, city]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Dados enviados", formData);
+    const authData = {
+      expiredTime: new Date().getMilliseconds() + expireDelay,
+      max_ammount: income * 10,
+      isAuthenticated: true,
+    };
+
+    localStorage.setItem("authenticatedUser", JSON.stringify(authData));
+    console.log(user, age, income, city);
   };
 
   return (
-    <div>
+    <section>
+      <p className={errMsg != "" ? "" : "offscreen"}>
+        O nome precisa ter no mínimo 8 caracteres
+      </p>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nome:</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label>Idade:</label>
-          <input
-            type="text"
-            name="age"
-            value={formData.age}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label>Renda Mensal:</label>
-          <input
-            type="text"
-            name="income"
-            value={formData.income}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label>Cidade:</label>
-          <input
-            type="text"
-            name="city"
-            value={formData.city}
-            onChange={handleChange}
-          />
-        </div>
-        <button type="submit">Submit</button>
+        <label htmlFor="user">Nome:</label>
+        <input
+          type="text"
+          id="user"
+          autoComplete="off"
+          onChange={(e) => setUser(e.target.value)}
+          required
+        />
+        <p className={!validUser && user ? "" : "offscreen"}>
+          O nome precisa ter no mínimo 8 caracteres
+        </p>
+
+        <label htmlFor="age">Idade:</label>
+        <input
+          type="text"
+          id="age"
+          autoComplete="off"
+          onChange={(e) => setAge(Number(e.target.value))}
+          value={!isNaN(age) ? age : ""}
+          required
+        />
+        <p className={!validAge && age ? "" : "offscreen"}>
+          A idade deve estar entre 18 e 65 anos
+        </p>
+
+        <label htmlFor="income">Renda Mensal:</label>
+        <input
+          type="text"
+          id="income"
+          autoComplete="off"
+          onChange={(e) => setIncome(Number(e.target.value))}
+          value={!isNaN(income) ? income : ""}
+          required
+        />
+        <p className={!validIncome && income ? "" : "offscreen"}>
+          A renda mensal deve ser maior que 0
+        </p>
+
+        <label htmlFor="city">Cidade:</label>
+        <input
+          type="text"
+          id="city"
+          autoComplete="off"
+          onChange={(e) => setCity(e.target.value)}
+          required
+        />
+        <p className={!validCity && city ? "" : "offscreen"}>
+          Este campo não pode estar em branco
+        </p>
+        <button type="submit">Enviar</button>
       </form>
-    </div>
+    </section>
   );
 }
 
