@@ -1,8 +1,31 @@
 import { useState, useEffect } from "react";
 
-function RegisterForm() {
-  const expireDelay = 180000;
+const fetchData = async (income, API_URL) => {
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ income: income }),
+    });
 
+    if (!response.ok) {
+      throw new Error("Não foi possível obter resposta");
+    }
+
+    const data = await response;
+    return data;
+  } catch (error) {
+    console.error(
+      "Ocorreu o seguinte erro ao tentar realizar a requisição:",
+      error
+    );
+    throw error;
+  }
+};
+
+function RegisterForm({ setIsAuthenticated, expirationDelay, API_URL }) {
   const [user, setUser] = useState("");
   const [validUser, setValidUser] = useState(false);
   useEffect(() => {
@@ -32,16 +55,29 @@ function RegisterForm() {
     setErrMsg("");
   }, [user, age, income, city]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const authData = {
-      expiredTime: new Date().getMilliseconds() + expireDelay,
-      max_ammount: income * 10,
-      isAuthenticated: true,
-    };
+    const response = await fetchData(income, API_URL);
+    const jsonData = await response.json();
 
-    localStorage.setItem("authenticatedUser", JSON.stringify(authData));
-    console.log(user, age, income, city);
+    if (validUser && validAge && validCity && validIncome) {
+      const authData = {
+        expiredTime: Date.now() + expirationDelay,
+      };
+
+      if (jsonData.status == "APPROVED"){
+        authData["isApproved"] = true
+        authData["max_ammount"] = jsonData.max_ammount;
+      }
+      else if (jsonData.status == "DENIED") {
+        authData["isApproved"] = false;
+      }else {
+        throw Error("API retornou valores inválidos")
+      }
+
+      localStorage.setItem('authData', JSON.stringify(authData));
+      setIsAuthenticated(true);
+    }
   };
 
   return (
@@ -84,7 +120,7 @@ function RegisterForm() {
           value={!isNaN(income) ? income : ""}
           required
         />
-        <p className={!validIncome && income ? "" : "offscreen"}>
+        <p className={!validIncome ? "" : "offscreen"}>
           A renda mensal deve ser maior que 0
         </p>
 
@@ -96,7 +132,7 @@ function RegisterForm() {
           onChange={(e) => setCity(e.target.value)}
           required
         />
-        <p className={!validCity && city ? "" : "offscreen"}>
+        <p className={!validCity ? "" : "offscreen"}>
           Este campo não pode estar em branco
         </p>
         <button type="submit">Enviar</button>
