@@ -10,10 +10,10 @@ app.use(
     preflightContinue: true,
   }),
 );
-app.post('/mock', (req, res) => {
-  const { income } = req.body; // Assuming you send a "requestType" key in your request
 
-  // Conditional logic based on the request content
+app.post('/mock', (req, res) => {
+  const { income } = req.body;
+
   let response;
 
   if (income <= 100){

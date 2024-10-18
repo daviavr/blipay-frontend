@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import Input from "./components/Input";
+import ValidationMessage from "./components/Validation";
 
 const fetchData = async (income, API_URL) => {
   try {
@@ -35,13 +37,13 @@ function RegisterForm({ setIsAuthenticated, expirationDelay, API_URL }) {
   const [age, setAge] = useState(NaN);
   const [validAge, setValidAge] = useState(false);
   useEffect(() => {
-    age >= 18 && age <= 65 ? setValidAge(true) : setValidAge(false);
+    !isNaN(+age) && age >= 18 && age <= 65 ? setValidAge(true) : setValidAge(false);
   }, [age]);
 
   const [income, setIncome] = useState(NaN);
   const [validIncome, setValidIncome] = useState(false);
   useEffect(() => {
-    income > 0 ? setValidIncome(true) : setValidIncome(false);
+    !isNaN(+income) && income > 0 ? setValidIncome(true) : setValidIncome(false);
   }, [income]);
 
   const [city, setCity] = useState("");
@@ -65,76 +67,59 @@ function RegisterForm({ setIsAuthenticated, expirationDelay, API_URL }) {
         expiredTime: Date.now() + expirationDelay,
       };
 
-      if (jsonData.status == "APPROVED"){
-        authData["isApproved"] = true
+      if (jsonData.status == "APPROVED") {
+        authData["isApproved"] = true;
         authData["max_ammount"] = jsonData.max_ammount;
-      }
-      else if (jsonData.status == "DENIED") {
+      } else if (jsonData.status == "DENIED") {
         authData["isApproved"] = false;
-      }else {
-        throw Error("API retornou valores inválidos")
+      } else {
+        throw Error("API retornou valores inválidos");
       }
 
-      localStorage.setItem('authData', JSON.stringify(authData));
+      localStorage.setItem("authData", JSON.stringify(authData));
       setIsAuthenticated(true);
     }
   };
 
   return (
-    <section>
+    <section className="registerPage">
       <p className={errMsg != "" ? "" : "offscreen"}>
         O nome precisa ter no mínimo 8 caracteres
       </p>
+
       <form onSubmit={handleSubmit}>
-        <label htmlFor="user">Nome:</label>
-        <input
+        <Input
+          content="Nome:"
           type="text"
           id="user"
-          autoComplete="off"
           onChange={(e) => setUser(e.target.value)}
-          required
         />
-        <p className={!validUser && user ? "" : "offscreen"}>
-          O nome precisa ter no mínimo 8 caracteres
-        </p>
+        <ValidationMessage isInvalid={!validUser && user} message={"O nome precisa ter no mínimo 8 caracteres"}/>
 
-        <label htmlFor="age">Idade:</label>
-        <input
+        <Input
+          content="Idade:"
           type="text"
           id="age"
-          autoComplete="off"
-          onChange={(e) => setAge(Number(e.target.value))}
-          value={!isNaN(age) ? age : ""}
-          required
+          onChange={(e) => setAge(e.target.value)}
         />
-        <p className={!validAge && age ? "" : "offscreen"}>
-          A idade deve estar entre 18 e 65 anos
-        </p>
+        <ValidationMessage isInvalid={!validAge && age} message={"A idade deve ser um número entre 18 e 65 anos"}/>
 
-        <label htmlFor="income">Renda Mensal:</label>
-        <input
+        <Input
+          content="Renda Mensal:"
           type="text"
           id="income"
-          autoComplete="off"
-          onChange={(e) => setIncome(Number(e.target.value))}
-          value={!isNaN(income) ? income : ""}
-          required
+          onChange={(e) => setIncome(e.target.value)}
         />
-        <p className={!validIncome ? "" : "offscreen"}>
-          A renda mensal deve ser maior que 0
-        </p>
+        <ValidationMessage isInvalid={!validIncome && income} message={"A renda deve ser um número maior que 0"}/>
 
-        <label htmlFor="city">Cidade:</label>
-        <input
+        <Input
+          content="Cidade:"
           type="text"
           id="city"
-          autoComplete="off"
           onChange={(e) => setCity(e.target.value)}
-          required
         />
-        <p className={!validCity ? "" : "offscreen"}>
-          Este campo não pode estar em branco
-        </p>
+        <ValidationMessage isInvalid={!validCity && city} message={"Este campo não pode estar em branco"}/>
+
         <button type="submit">Enviar</button>
       </form>
     </section>
