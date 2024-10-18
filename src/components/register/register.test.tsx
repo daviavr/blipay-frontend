@@ -10,7 +10,7 @@ describe("Component Register", () => {
       setIsAuthenticated={mockAuth}
       expirationDelay={200}
     />);
-    const element = screen.getByRole("heading");
+    const element = screen.queryByText("Registro");
     expect(element).toBeInTheDocument();
   });
 });

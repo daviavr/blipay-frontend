@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Input from "../Input";
 import ValidationMessage from "../Validation";
-import './pages.css'
+import '../generic.css'
 
 const fetchData = async (income, API_URL) => {
   try {
@@ -89,6 +89,7 @@ function Register({ setIsAuthenticated, expirationDelay, API_URL }) {
 
   return (
     <section className="registerPage">
+      <h1>Registro</h1>
       <p className={errMsg != "" ? "error" : "offscreen"}>
         {errMsg}
       </p>

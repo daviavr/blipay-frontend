@@ -1,4 +1,4 @@
-import './pages.css'
+import '../generic.css'
 
 function Result({ data }) {
   const authJsonData = JSON.parse(data);
