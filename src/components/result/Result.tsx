@@ -1,12 +1,9 @@
 import './pages.css'
 
-function LandingPage({ data }) {
+function Result({ data }) {
   const authJsonData = JSON.parse(data);
   let isApproved = authJsonData["isApproved"];
   let maxAmmount = authJsonData["max_ammount"];
-  if (isApproved) {
-    console.log("aiaiai");
-  }
 
   const component = isApproved ? (
     <div>
@@ -20,4 +17,4 @@ function LandingPage({ data }) {
   return component;
 }
 
-export default LandingPage;
+export default Result;

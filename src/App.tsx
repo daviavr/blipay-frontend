@@ -1,11 +1,12 @@
 import "./App.css";
 import { useState, useEffect } from "react";
-import RegisterForm from "./pages/RegisterForm.tsx";
-import LandingPage from "./pages/LandingPage.tsx";
+import Register from "./components/register/Register.tsx";
+import Result from "./components/result/Result.tsx";
 
 function App() {
   // 2 minutos
   const dataExpirationDelay = 2 * 60 * 1000;
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const API_URL = "http://localhost:3000/mock";
   const authData = localStorage.getItem("authData");
@@ -20,12 +21,12 @@ function App() {
         setIsAuthenticated(true);
       }
     }
-  }, [isAuthenticated]);
+  }, []);
 
   return isAuthenticated == true ? (
-    <LandingPage data={authData} />
+    <Result data={authData} />
   ) : (
-    <RegisterForm
+    <Register
       API_URL={API_URL}
       setIsAuthenticated={setIsAuthenticated}
       expirationDelay={dataExpirationDelay}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import Input from "../components/Input";
-import ValidationMessage from "../components/Validation";
+import Input from "../Input";
+import ValidationMessage from "../Validation";
 import './pages.css'
 
 const fetchData = async (income, API_URL) => {
@@ -17,8 +17,7 @@ const fetchData = async (income, API_URL) => {
       throw new Error("Não foi possível obter resposta");
     }
 
-    const data = await response;
-    return data;
+    return response;
   } catch (error) {
     console.error(
       "Ocorreu o seguinte erro ao tentar realizar a requisição:",
@@ -28,7 +27,7 @@ const fetchData = async (income, API_URL) => {
   }
 };
 
-function RegisterForm({ setIsAuthenticated, expirationDelay, API_URL }) {
+function Register({ setIsAuthenticated, expirationDelay, API_URL }) {
   const [user, setUser] = useState("");
   const [validUser, setValidUser] = useState(false);
   useEffect(() => {
@@ -64,10 +63,10 @@ function RegisterForm({ setIsAuthenticated, expirationDelay, API_URL }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetchData(income, API_URL);
-    const jsonData = await response.json();
 
     if (validUser && validAge && validCity && validIncome) {
+      const response = await fetchData(income, API_URL);
+      const jsonData = await response.json();
       const authData = {
         expiredTime: Date.now() + expirationDelay,
       };
@@ -153,4 +152,4 @@ function RegisterForm({ setIsAuthenticated, expirationDelay, API_URL }) {
   );
 }
 
-export default RegisterForm;
+export default Register;
