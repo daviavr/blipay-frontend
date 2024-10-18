@@ -1,0 +1,57 @@
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 900;
+  font-family: inherit;
+  background-color: #3e3e85;
+  color: #FFF;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #1a1a1a;
+}
+input {
+  border-radius: 8px;
+  margin: 0 1em 0 2em;
+  width: 100%;
+}
+
+label {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: bold;
+  font-size: 1.4em;
+  width: 4rem;
+  color: #FFF;
+}
+
+.registerPage {
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  background-color: #1e1e3f;
+  width: 30vw;
+  padding: 2em 2em 3em 2em;
+}
+
+.formField {
+  justify-content: center;
+  margin: 0 0 2em 0;
+}
+
+.dataField {
+  display: flex;
+  flex-direction: row;
+}
+
+.validation {
+  margin: 1rem 0 0 0;
+  color: red
+}
+
+.offscreen {
+  position: absolute;
+  left: -9999px;
+}

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import Input from "./components/Input";
-import ValidationMessage from "./components/Validation";
+import Input from "../components/Input";
+import ValidationMessage from "../components/Validation";
+import './pages.css'
 
 const fetchData = async (income, API_URL) => {
   try {
@@ -37,13 +38,17 @@ function RegisterForm({ setIsAuthenticated, expirationDelay, API_URL }) {
   const [age, setAge] = useState(NaN);
   const [validAge, setValidAge] = useState(false);
   useEffect(() => {
-    !isNaN(+age) && age >= 18 && age <= 65 ? setValidAge(true) : setValidAge(false);
+    !isNaN(+age) && age >= 18 && age <= 65
+      ? setValidAge(true)
+      : setValidAge(false);
   }, [age]);
 
   const [income, setIncome] = useState(NaN);
   const [validIncome, setValidIncome] = useState(false);
   useEffect(() => {
-    !isNaN(+income) && income > 0 ? setValidIncome(true) : setValidIncome(false);
+    !isNaN(+income) && income > 0
+      ? setValidIncome(true)
+      : setValidIncome(false);
   }, [income]);
 
   const [city, setCity] = useState("");
@@ -78,47 +83,69 @@ function RegisterForm({ setIsAuthenticated, expirationDelay, API_URL }) {
 
       localStorage.setItem("authData", JSON.stringify(authData));
       setIsAuthenticated(true);
+    } else {
+      setErrMsg("Um ou mais campos estão invalidos");
     }
   };
 
   return (
     <section className="registerPage">
-      <p className={errMsg != "" ? "" : "offscreen"}>
-        O nome precisa ter no mínimo 8 caracteres
+      <p className={errMsg != "" ? "error" : "offscreen"}>
+        {errMsg}
       </p>
 
       <form onSubmit={handleSubmit}>
-        <Input
-          content="Nome:"
-          type="text"
-          id="user"
-          onChange={(e) => setUser(e.target.value)}
-        />
-        <ValidationMessage isInvalid={!validUser && user} message={"O nome precisa ter no mínimo 8 caracteres"}/>
+        <div className="formField">
+          <Input
+            content="Nome:"
+            type="text"
+            id="user"
+            onChange={(e) => setUser(e.target.value)}
+          />
+          <ValidationMessage
+            isInvalid={!validUser && user}
+            message={"O nome precisa ter no mínimo 8 caracteres"}
+          />
+        </div>
 
-        <Input
-          content="Idade:"
-          type="text"
-          id="age"
-          onChange={(e) => setAge(e.target.value)}
-        />
-        <ValidationMessage isInvalid={!validAge && age} message={"A idade deve ser um número entre 18 e 65 anos"}/>
+        <div className="formField">
+          <Input
+            content="Idade:"
+            type="text"
+            id="age"
+            onChange={(e) => setAge(e.target.value)}
+          />
+          <ValidationMessage
+            isInvalid={!validAge && age}
+            message={"A idade deve ser um número entre 18 e 65 anos"}
+          />
+        </div>
 
-        <Input
-          content="Renda Mensal:"
-          type="text"
-          id="income"
-          onChange={(e) => setIncome(e.target.value)}
-        />
-        <ValidationMessage isInvalid={!validIncome && income} message={"A renda deve ser um número maior que 0"}/>
+        <div className="formField">
+          <Input
+            content="Renda:"
+            type="text"
+            id="income"
+            onChange={(e) => setIncome(e.target.value)}
+          />
+          <ValidationMessage
+            isInvalid={!validIncome && income}
+            message={"A renda deve ser um número maior que 0"}
+          />
+        </div>
 
-        <Input
-          content="Cidade:"
-          type="text"
-          id="city"
-          onChange={(e) => setCity(e.target.value)}
-        />
-        <ValidationMessage isInvalid={!validCity && city} message={"Este campo não pode estar em branco"}/>
+        <div className="formField">
+          <Input
+            content="Cidade:"
+            type="text"
+            id="city"
+            onChange={(e) => setCity(e.target.value)}
+          />
+          <ValidationMessage
+            isInvalid={!validCity && city}
+            message={"Este campo não pode estar em branco"}
+          />
+        </div>
 
         <button type="submit">Enviar</button>
       </form>

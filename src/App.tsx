@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
 import "./App.css";
-import RegisterForm from "./RegisterForm.tsx";
-import LandingPage from "./LandingPage.tsx";
+import { useState, useEffect } from "react";
+import RegisterForm from "./pages/RegisterForm.tsx";
+import LandingPage from "./pages/LandingPage.tsx";
 
 function App() {
-  const dataExpirationDelay = 3 * 60 * 1000;
+  // 2 minutos
+  const dataExpirationDelay = 2 * 60 * 1000;
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const API_URL = "http://localhost:3000/mock";
   const authData = localStorage.getItem("authData");
