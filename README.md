@@ -21,12 +21,24 @@ $ npm dev
 $ acesse a url http://localhost:5173 no seu navegador para visualizar o projeto
 
 ```
-#### Rodando os testes unitários
+
+#### Iniciando a API
 
 ```bash
 
-# Clone este repositório
-$ git clone https://github.com/daviavr/blipay-frontend
+# Acesse a pasta do projeto no seu terminal/cmd
+$ cd blipay-frontend 
+
+# Instale as dependências
+$ node mockApi.js
+
+# A API roda na porta 3000 (http://localhost:3000)
+
+```
+
+#### Rodando os testes unitários
+
+```bash
 
 # Acesse a pasta do projeto no seu terminal/cmd
 $ cd blipay-frontend 
