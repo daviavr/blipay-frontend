@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Input from "../Input";
 import ValidationMessage from "../Validation";
-import '../generic.css'
+import "../generic.css";
 
 const fetchData = async (income, API_URL) => {
   try {
@@ -53,7 +53,10 @@ function Register({ setIsAuthenticated, expirationDelay, API_URL }) {
   const [city, setCity] = useState("");
   const [validCity, setValidCity] = useState(false);
   useEffect(() => {
-    city != "" ? setValidCity(true) : setValidCity(false);
+    const isEmptyField = (field) => /^[\s]*$/.test(field);
+    city != "" && !isEmptyField(city)
+      ? setValidCity(true)
+      : setValidCity(false);
   }, [city]);
 
   const [errMsg, setErrMsg] = useState("");
@@ -89,10 +92,8 @@ function Register({ setIsAuthenticated, expirationDelay, API_URL }) {
 
   return (
     <section className="registerPage">
-      <h1>Registro</h1>
-      <p className={errMsg != "" ? "error" : "offscreen"}>
-        {errMsg}
-      </p>
+      <h1 className="title">Registro</h1>
+      <p className={errMsg != "" ? "error" : "offscreen"}>{errMsg}</p>
 
       <form onSubmit={handleSubmit}>
         <div className="formField">
