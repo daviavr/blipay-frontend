@@ -27,11 +27,7 @@ label {
   color: #fff;
 }
 
-h1 {
-  color: #fff;
-}
-
-.error {
+.error .validation{
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-weight: bold;
   font-size: 1.4em;
@@ -49,6 +45,7 @@ h1 {
 
 .formField {
   display: flex;
+  flex-direction: column;
   flex-wrap: nowrap;
   justify-content: space-around;
   margin: 0 0 2em 0;
@@ -59,11 +56,6 @@ h1 {
   flex: 1;
   display: flex;
   flex-direction: row;
-}
-
-.validation {
-  margin: 1rem 0 0 0;
-  color: red;
 }
 
 .offscreen {
