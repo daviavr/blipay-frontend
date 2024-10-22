@@ -31,7 +31,8 @@ label {
   color: #fff;
 }
 
-.error .validation{
+.error,
+.validation{
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-weight: bold;
   font-size: 1.4em;
